@@ -26,6 +26,7 @@ export const homeView: ViewFn = (ctx, screen) => {
       <a href="#/settings" class="icon-btn" aria-label="Réglages"><i class="fa-solid fa-gear"></i></a>
     </div>
 
+    ${import.meta.env.MODE === 'single' ? `<p class="mb-4 p-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-200 text-xs">Aperçu en ligne : vos essais restent dans ce navigateur et les exports de fichiers sont désactivés ici. Pour l'usage réel, installez l'application (voir LISEZMOI).</p>` : ''}
     <a href="#/search" class="flex items-center gap-3 px-4 py-3 mb-4 card text-slate-400"><i class="fa-solid fa-magnifying-glass"></i><span>Rechercher dans vos notes…</span></a>
 
     <div class="grid grid-cols-4 gap-2 mb-5">
