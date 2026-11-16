@@ -1,0 +1,219 @@
+<section id="tab-invest" class="tab-content hidden space-y-6">
+    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-6">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-200 dark:border-slate-700 pb-4">
+            <div>
+                <h2 class="text-lg font-bold mb-1 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-line text-purple-500"></i> Stratégie d'Investissement &amp; Intérêts Composés
+                </h2>
+                <p class="text-sm text-slate-500 dark:text-slate-400">Définissez vos versements, visualisez vos mini-courbes et comparez l'effort d'épargne aux intérêts générés.</p>
+            </div>
+            <div class="flex flex-col items-end gap-1 bg-slate-50 dark:bg-slate-700/50 p-2.5 rounded-xl border border-slate-200 dark:border-slate-600">
+                <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Horizon de projection</label>
+                <div class="flex items-center gap-2">
+                    <input type="range" id="input-proj-years" min="1" max="40" step="1" value="20" class="w-24 h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer dark:bg-slate-600">
+                    <span class="text-sm font-bold text-purple-600 dark:text-purple-400"><span id="val-proj-years">20</span> ans</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grille des 5 catégories d'investissement avec mini-graphes -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Livrets -->
+            <div class="bg-slate-50 dark:bg-slate-700/30 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                <div>
+                    <h3 class="font-bold text-sm flex items-center gap-2 text-slate-800 dark:text-slate-100 mb-3">
+                        <i class="fa-solid fa-piggy-bank text-emerald-500"></i> Épargne Sécurisée (Livrets)
+                    </h3>
+                    <div class="grid grid-cols-2 gap-3 mb-3">
+                        <div>
+                            <label class="text-[10px] uppercase font-bold text-slate-500">Mensuel (€)</label>
+                            <input type="number" id="input-savings-num" min="0" class="w-full font-bold text-emerald-600 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg p-1.5 text-xs">
+                        </div>
+                        <div>
+                            <label class="text-[10px] uppercase font-bold text-slate-500">Rendement (%)</label>
+                            <input type="number" id="input-rate-savings-num" step="0.1" class="w-full font-bold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg p-1.5 text-xs">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="text-[10px] uppercase font-bold text-slate-500">Capital départ (€)</label>
+                            <input type="number" id="input-init-savings-num" min="0" class="w-full font-bold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg p-1.5 text-xs">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="h-20 w-full mt-2">
+                        <canvas id="chart-cat-savings"></canvas>
+                    </div>
+                    <div class="text-center text-xs font-medium text-slate-500 mt-2">
+                        Capital final : <span id="final-savings" class="font-bold text-emerald-600">0 €</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bourse ETF -->
+            <div class="bg-slate-50 dark:bg-slate-700/30 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                <div>
+                    <h3 class="font-bold text-sm flex items-center gap-2 text-slate-800 dark:text-slate-100 mb-3">
+                        <i class="fa-solid fa-arrow-trend-up text-purple-500"></i> Bourse / PEA / ETF
+                    </h3>
+                    <div class="grid grid-cols-2 gap-3 mb-3">
+                        <div>
+                            <label class="text-[10px] uppercase font-bold text-slate-500">Mensuel (€)</label>
+                            <input type="number" id="input-etf-num" min="0" class="w-full font-bold text-purple-600 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg p-1.5 text-xs">
+                        </div>
+                        <div>
+                            <label class="text-[10px] uppercase font-bold text-slate-500">Rendement (%)</label>
+                            <input type="number" id="input-rate-etf-num" step="0.1" class="w-full font-bold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg p-1.5 text-xs">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="text-[10px] uppercase font-bold text-slate-500">Capital départ (€)</label>
+                            <input type="number" id="input-init-etf-num" min="0" class="w-full font-bold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg p-1.5 text-xs">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="h-20 w-full mt-2">
+                        <canvas id="chart-cat-etf"></canvas>
+                    </div>
+                    <div class="text-center text-xs font-medium text-slate-500 mt-2">
+                        Capital final : <span id="final-etf" class="font-bold text-purple-600">0 €</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Crypto -->
+            <div class="bg-slate-50 dark:bg-slate-700/30 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                <div>
+                    <h3 class="font-bold text-sm flex items-center gap-2 text-slate-800 dark:text-slate-100 mb-3">
+                        <i class="fa-brands fa-bitcoin text-amber-500"></i> Crypto-actifs
+                    </h3>
+                    <div class="grid grid-cols-2 gap-3 mb-3">
+                        <div>
+                            <label class="text-[10px] uppercase font-bold text-slate-500">Mensuel (€)</label>
+                            <input type="number" id="input-crypto-num" min="0" class="w-full font-bold text-amber-600 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg p-1.5 text-xs">
+                        </div>
+                        <div>
+                            <label class="text-[10px] uppercase font-bold text-slate-500">Rendement (%)</label>
+                            <input type="number" id="input-rate-crypto-num" step="0.1" class="w-full font-bold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg p-1.5 text-xs">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="text-[10px] uppercase font-bold text-slate-500">Capital départ (€)</label>
+                            <input type="number" id="input-init-crypto-num" min="0" class="w-full font-bold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg p-1.5 text-xs">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="h-20 w-full mt-2">
+                        <canvas id="chart-cat-crypto"></canvas>
+                    </div>
+                    <div class="text-center text-xs font-medium text-slate-500 mt-2">
+                        Capital final : <span id="final-crypto" class="font-bold text-amber-600">0 €</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Immobilier SCPI -->
+            <div class="bg-slate-50 dark:bg-slate-700/30 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                <div>
+                    <h3 class="font-bold text-sm flex items-center gap-2 text-slate-800 dark:text-slate-100 mb-3">
+                        <i class="fa-solid fa-building-columns text-blue-500"></i> Immobilier / SCPI
+                    </h3>
+                    <div class="grid grid-cols-2 gap-3 mb-3">
+                        <div>
+                            <label class="text-[10px] uppercase font-bold text-slate-500">Mensuel (€)</label>
+                            <input type="number" id="input-realestate-num" min="0" class="w-full font-bold text-blue-600 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg p-1.5 text-xs">
+                        </div>
+                        <div>
+                            <label class="text-[10px] uppercase font-bold text-slate-500">Rendement (%)</label>
+                            <input type="number" id="input-rate-realestate-num" step="0.1" class="w-full font-bold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg p-1.5 text-xs">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="text-[10px] uppercase font-bold text-slate-500">Capital départ (€)</label>
+                            <input type="number" id="input-init-realestate-num" min="0" class="w-full font-bold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg p-1.5 text-xs">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="h-20 w-full mt-2">
+                        <canvas id="chart-cat-realestate"></canvas>
+                    </div>
+                    <div class="text-center text-xs font-medium text-slate-500 mt-2">
+                        Capital final : <span id="final-realestate" class="font-bold text-blue-600">0 €</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Autres Investissements -->
+            <div class="bg-slate-50 dark:bg-slate-700/30 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                <div>
+                    <h3 class="font-bold text-sm flex items-center gap-2 text-slate-800 dark:text-slate-100 mb-3">
+                        <i class="fa-solid fa-coins text-slate-400"></i> Autres investissements
+                    </h3>
+                    <div class="grid grid-cols-2 gap-3 mb-3">
+                        <div>
+                            <label class="text-[10px] uppercase font-bold text-slate-500">Mensuel (€)</label>
+                            <input type="number" id="input-other-invest-num" min="0" class="w-full font-bold text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg p-1.5 text-xs">
+                        </div>
+                        <div>
+                            <label class="text-[10px] uppercase font-bold text-slate-500">Rendement (%)</label>
+                            <input type="number" id="input-rate-other-invest-num" step="0.1" class="w-full font-bold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg p-1.5 text-xs">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="text-[10px] uppercase font-bold text-slate-500">Capital départ (€)</label>
+                            <input type="number" id="input-init-other-invest-num" min="0" class="w-full font-bold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg p-1.5 text-xs">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="h-20 w-full mt-2">
+                        <canvas id="chart-cat-other-invest"></canvas>
+                    </div>
+                    <div class="text-center text-xs font-medium text-slate-500 mt-2">
+                        Capital final : <span id="final-other-invest" class="font-bold text-slate-600 dark:text-slate-300">0 €</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carte KPI Totaux -->
+            <div class="p-5 bg-indigo-50 dark:bg-indigo-950/40 rounded-2xl border border-indigo-200 dark:border-indigo-800 flex flex-col justify-center">
+                <div class="space-y-4">
+                    <div>
+                        <span class="text-xs text-indigo-700 dark:text-indigo-300 uppercase font-semibold">Total Investi Mensuel</span>
+                        <div id="subtotal-invest" class="text-2xl font-extrabold text-indigo-600 dark:text-indigo-400 mt-1">0 €</div>
+                    </div>
+                    <hr class="border-indigo-200 dark:border-indigo-800">
+                    <div>
+                        <span class="text-xs text-indigo-700 dark:text-indigo-300 uppercase font-semibold">Capital Total Projeté</span>
+                        <div id="proj-kpi-final" class="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400 mt-1">0 €</div>
+                        <p class="text-[11px] text-indigo-600 dark:text-indigo-300 mt-1">
+                            Dont <span id="proj-kpi-total-invested" class="font-bold">0 €</span> de votre poche 
+                            et <span id="proj-kpi-interests" class="font-bold text-emerald-600 dark:text-emerald-400">0 €</span> d'intérêts.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEUX GRAPHIQUES INVESTISSEMENTS (Cumul par actif & Capital vs Intérêts) -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+            <!-- Graphique 1: Cumul par classe d'actif -->
+            <div class="bg-slate-50 dark:bg-slate-700/30 p-4 rounded-2xl border border-slate-200 dark:border-slate-700">
+                <h3 class="font-bold text-sm flex items-center gap-2 text-slate-800 dark:text-slate-100 mb-4">
+                    <i class="fa-solid fa-layer-group text-indigo-500"></i> Répartition globale cumulée
+                </h3>
+                <div class="h-72 w-full">
+                    <canvas id="chart-proj-global"></canvas>
+                </div>
+            </div>
+
+            <!-- Graphique 2: Capital Investi vs Intérêts Composés -->
+            <div class="bg-slate-50 dark:bg-slate-700/30 p-4 rounded-2xl border border-slate-200 dark:border-slate-700">
+                <h3 class="font-bold text-sm flex items-center gap-2 text-slate-800 dark:text-slate-100 mb-4">
+                    <i class="fa-solid fa-money-bill-trend-up text-emerald-500"></i> Capital Investi vs Part des Intérêts
+                </h3>
+                <div class="h-72 w-full">
+                    <canvas id="chart-proj-interest"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

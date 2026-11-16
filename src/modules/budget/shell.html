@@ -1,0 +1,268 @@
+<!-- Module budget : reprise de l'interface MonBudgetPro, adaptée au téléphone.
+     Les fenêtres et les identifiants sont ceux de l'application de bureau (généré depuis son index.html). -->
+
+
+    <!-- Custom Confirm Modal -->
+    <div id="custom-confirm-modal" class="fixed inset-0 z-[120] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-200">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl max-w-sm w-full p-6 transform scale-95 transition-transform duration-200" id="custom-confirm-box">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 flex items-center justify-center text-lg flex-shrink-0">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <h3 class="font-bold text-slate-800 dark:text-slate-100">Confirmation</h3>
+            </div>
+            <p id="custom-confirm-message" class="text-sm text-slate-600 dark:text-slate-300 mb-6"></p>
+            <div class="flex items-center justify-end gap-3">
+                <button id="custom-confirm-cancel" class="px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition">Annuler</button>
+                <button id="custom-confirm-ok" class="px-4 py-2 rounded-xl text-sm font-semibold bg-brand-600 text-white hover:bg-brand-700 transition">Confirmer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modale Dette -->
+    <div id="modal-debt" class="fixed inset-0 z-[115] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-200">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl max-w-md w-full p-6 transform scale-95 transition-transform duration-200" id="modal-debt-box">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-700 mb-4">
+                <h3 class="font-bold text-base flex items-center gap-2">
+                    <i class="fa-solid fa-file-invoice-dollar text-rose-500"></i> <span id="modal-debt-title">Ajouter une dette</span>
+                </h3>
+                <button type="button" id="modal-debt-close" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <form id="form-debt" class="space-y-4 text-sm">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">Nom</label>
+                    <input type="text" id="debt-input-name" placeholder="ex: Prêt auto, Crédit conso, Prêt familial..." required class="w-full p-2.5 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 mb-1">Capital restant dû (€)</label>
+                        <input type="number" id="debt-input-amount" min="0" step="any" placeholder="8000" required class="w-full p-2.5 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl font-bold">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 mb-1">Taux annuel (%)</label>
+                        <input type="number" id="debt-input-rate" min="0" step="any" placeholder="0" value="0" class="w-full p-2.5 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl font-bold">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">Mensualité (€)</label>
+                    <input type="number" id="debt-input-monthly" min="0" step="any" placeholder="250" required class="w-full p-2.5 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl font-bold text-rose-600">
+                </div>
+                <label class="flex items-start gap-2 text-xs text-slate-600 dark:text-slate-300 cursor-pointer">
+                    <input type="checkbox" id="debt-input-inbudget" checked class="mt-0.5 accent-rose-600">
+                    <span>Compter la mensualité dans les dépenses prévues du budget<br><span class="text-slate-400">Décochez si elle est déjà incluse ailleurs (loyer, location de voiture...).</span></span>
+                </label>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" id="modal-debt-cancel" class="px-4 py-2 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl">Annuler</button>
+                    <button type="submit" id="modal-debt-submit" class="px-4 py-2 text-xs font-semibold bg-rose-600 hover:bg-rose-700 text-white rounded-xl shadow">Ajouter la dette</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modale Nouveau Projet de Vie -->
+    <div id="modal-project" class="fixed inset-0 z-[115] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-200">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl max-w-md w-full p-6 transform scale-95 transition-transform duration-200" id="modal-project-box">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-700 mb-4">
+                <h3 class="font-bold text-base flex items-center gap-2">
+                    <i class="fa-solid fa-bullseye text-brand-600"></i> <span id="modal-project-title">Ajouter un Projet d'Épargne</span>
+                </h3>
+                <button id="modal-project-close" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <form id="form-new-project" class="space-y-4 text-sm">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">Nom du projet</label>
+                    <input type="text" id="project-input-name" placeholder="ex: Voyage au Japon, Nouvel ordi..." required class="w-full p-2.5 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 mb-1">Objectif (€)</label>
+                        <input type="number" id="project-input-target" min="0" step="any" placeholder="3000" required class="w-full p-2.5 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl font-bold">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 mb-1">Déjà épargné (€)</label>
+                        <input type="number" id="project-input-current" min="0" step="any" placeholder="0" value="0" class="w-full p-2.5 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl font-bold text-emerald-600">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">Versement mensuel prévu (€, facultatif)</label>
+                    <input type="number" id="project-input-monthly" min="0" step="any" placeholder="ex: 150" class="w-full p-2.5 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl font-bold text-brand-600">
+                    <p class="text-[11px] text-slate-400 mt-1">Sert à estimer la date à laquelle l'objectif sera atteint. Sans lui, l'estimation se base sur vos versements.</p>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" id="modal-project-cancel" class="px-4 py-2 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl">Annuler</button>
+                    <button type="submit" id="modal-project-submit" class="px-4 py-2 text-xs font-semibold bg-brand-600 hover:bg-brand-700 text-white rounded-xl shadow">Créer le projet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Modale Nouvel Abonnement -->
+    <div id="modal-sub" class="fixed inset-0 z-[115] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-200">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl max-w-md w-full p-6 transform scale-95 transition-transform duration-200" id="modal-sub-box">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-700 mb-4">
+                <h3 class="font-bold text-base flex items-center gap-2">
+                    <i class="fa-solid fa-arrows-rotate text-teal-500"></i> <span id="modal-sub-title">Ajouter un Abonnement</span>
+                </h3>
+                <button type="button" id="modal-sub-close" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <form id="form-new-sub" class="space-y-4 text-sm">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">Nom de l'abonnement</label>
+                    <input type="text" id="sub-input-name" placeholder="ex: Spotify, Salle de sport..." required class="w-full p-2.5 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">Montant mensuel (€)</label>
+                    <input type="number" id="sub-input-amount" min="0" step="0.01" value="15" required class="w-full p-2.5 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl font-bold text-teal-600">
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" id="modal-sub-cancel" class="px-4 py-2 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl">Annuler</button>
+                    <button type="submit" id="modal-sub-submit" class="px-4 py-2 text-xs font-semibold bg-teal-600 hover:bg-teal-700 text-white rounded-xl shadow">Ajouter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Modale Montant (versement sur un projet...) -->
+    <div id="modal-amount" class="fixed inset-0 z-[118] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-200">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl max-w-sm w-full p-6 transform scale-95 transition-transform duration-200" id="modal-amount-box">
+            <h3 id="modal-amount-title" class="font-bold text-base mb-4 flex items-center gap-2"></h3>
+            <form id="form-amount" class="space-y-4 text-sm">
+                <div>
+                    <label id="modal-amount-label" class="block text-xs font-semibold text-slate-500 mb-1"></label>
+                    <input type="number" id="modal-amount-input" step="0.01" required class="w-full p-2.5 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl font-bold text-emerald-600">
+                </div>
+                <div class="flex justify-end gap-2">
+                    <button type="button" id="modal-amount-cancel" class="px-4 py-2 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl">Annuler</button>
+                    <button type="submit" class="px-4 py-2 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow">Valider</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <!-- Fenêtre de saisie générique (comptes, charges, scénarios...) -->
+    <div id="modal-form" class="fixed inset-0 z-[117] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-200">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl max-w-md w-full p-6 transform scale-95 transition-transform duration-200 max-h-[90vh] overflow-y-auto" id="modal-form-box">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-700 mb-4">
+                <h3 class="font-bold text-base flex items-center gap-2"><i id="modal-form-icon" class="fa-solid fa-pen text-brand-600"></i> <span id="modal-form-title"></span></h3>
+                <button type="button" id="modal-form-close" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <form id="form-generic" class="space-y-4 text-sm">
+                <p id="modal-form-intro" class="hidden text-xs text-slate-500 dark:text-slate-400"></p>
+                <div id="form-generic-fields" class="space-y-4"></div>
+                <p id="modal-form-error" class="hidden text-xs font-semibold text-rose-600"></p>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" id="modal-form-cancel" class="px-4 py-2 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl">Annuler</button>
+                    <button type="submit" id="modal-form-submit" class="px-4 py-2 text-xs font-semibold bg-brand-600 hover:bg-brand-700 text-white rounded-xl shadow">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Visionneuse de pièces jointes -->
+    <div id="modal-viewer" class="fixed inset-0 z-[125] bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-200">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl w-full max-w-4xl h-[85vh] flex flex-col transform scale-95 transition-transform duration-200" id="modal-viewer-box">
+            <div class="flex items-center justify-between gap-3 px-5 py-3 border-b border-slate-200 dark:border-slate-700">
+                <h3 class="font-bold text-sm flex items-center gap-2 min-w-0"><i class="fa-solid fa-paperclip text-brand-600"></i> <span id="modal-viewer-title" class="truncate"></span></h3>
+                <div class="flex items-center gap-2">
+                    <button type="button" id="modal-viewer-download" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 flex items-center gap-1.5"><i class="fa-solid fa-download"></i> Enregistrer une copie</button>
+                    <button type="button" id="modal-viewer-close" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
+            </div>
+            <div id="modal-viewer-body" class="flex-1 min-h-0 flex items-center justify-center bg-slate-100 dark:bg-slate-900 rounded-b-2xl overflow-auto"></div>
+        </div>
+    </div>
+
+    <!-- Écran de déverrouillage (fichier protégé par mot de passe) -->
+    <div id="lock-screen" class="fixed inset-0 z-[200] bg-slate-100 dark:bg-slate-900 flex items-center justify-center p-4 hidden">
+        <form id="form-unlock" class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xl w-full max-w-sm p-8 space-y-5 text-center">
+            <div class="mx-auto w-14 h-14 flex items-center justify-center bg-brand-600 text-white rounded-2xl shadow-md"><i class="fa-solid fa-lock text-2xl"></i></div>
+            <div>
+                <h1 class="text-lg font-bold">MonBudget<span class="text-brand-600">Pro</span> est verrouillé</h1>
+                <p class="text-xs text-slate-500 mt-1">Saisissez votre mot de passe pour ouvrir vos données.</p>
+            </div>
+            <input type="password" id="unlock-password" autocomplete="current-password" placeholder="Mot de passe" class="w-full p-2.5 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl text-center">
+            <p id="unlock-error" class="hidden text-xs font-semibold text-rose-600">Mot de passe incorrect.</p>
+            <button type="submit" id="unlock-submit" class="w-full px-4 py-2.5 text-sm font-semibold bg-brand-600 hover:bg-brand-700 text-white rounded-xl shadow">Déverrouiller</button>
+        </form>
+    </div>
+
+    <!-- Rapport imprimable (visible seulement à l'impression) -->
+    <div id="print-report" class="print-only"></div>
+
+    <div id="toast" class="fixed top-20 sm:top-auto sm:bottom-4 right-4 bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 px-4 py-2.5 rounded-xl shadow-xl flex items-center gap-2 opacity-0 pointer-events-none transition-opacity duration-300 z-[130] text-sm">
+        <i class="fa-solid fa-circle-check text-emerald-400 dark:text-emerald-600" id="toast-icon"></i>
+        <span id="toast-message">Modifications enregistrées</span>
+    </div>
+
+    
+<div class="flex flex-col h-full min-h-0">
+  <header class="flex-shrink-0 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
+    <div class="flex items-center justify-between gap-2 px-4 pt-3">
+      <div class="flex items-center gap-2 min-w-0">
+        <div class="p-1.5 bg-brand-600 text-white rounded-lg"><i class="fa-solid fa-wallet"></i></div>
+        <div class="min-w-0">
+          <h1 class="text-sm font-bold leading-tight">MonBudget<span class="text-brand-600">Pro</span> <span id="app-version" class="text-[10px] font-normal opacity-60"></span></h1>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 truncate"><span id="top-month"></span> · reste à vivre <b id="top-net" class="text-brand-600 dark:text-brand-400">0 €</b></p>
+        </div>
+      </div>
+      <div class="flex items-center gap-1 flex-shrink-0">
+        <button id="lock-btn" title="Verrouiller" class="hidden w-9 h-9 rounded-full text-amber-500 hover:bg-slate-100 dark:hover:bg-slate-700"><i class="fa-solid fa-lock"></i></button>
+        <button id="export-json-btn" title="Exporter une sauvegarde du budget" class="w-9 h-9 rounded-full text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700"><i class="fa-solid fa-download"></i></button>
+        <button id="import-json-btn" title="Charger une sauvegarde du budget" class="w-9 h-9 rounded-full text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700"><i class="fa-solid fa-upload"></i></button>
+        <button id="quick-add-expense" title="Saisir une dépense" class="ml-1 px-3 h-9 bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold rounded-full shadow-sm flex items-center gap-1.5"><i class="fa-solid fa-plus"></i> Dépense</button>
+      </div>
+    </div>
+    <div class="grid grid-cols-3 gap-2 px-4 pt-2 text-[11px]">
+      <div><div class="uppercase font-semibold text-slate-400 text-[9px]">Revenus</div><div id="top-income" class="font-semibold text-emerald-600 dark:text-emerald-400">0 €</div></div>
+      <div><div class="uppercase font-semibold text-slate-400 text-[9px]">Prévu</div><div id="top-expenses" class="font-semibold text-rose-600 dark:text-rose-400">0 €</div></div>
+      <div><div class="uppercase font-semibold text-slate-400 text-[9px] flex justify-between"><span>Dépensé</span><span id="top-real-pct"></span></div><div id="top-real" class="font-semibold">0 €</div>
+        <div class="w-full bg-slate-200 dark:bg-slate-700 h-1 rounded-full overflow-hidden mt-0.5"><div id="top-real-bar" class="h-1 rounded-full bg-emerald-500" style="width:0%"></div></div></div>
+    </div>
+    <nav id="tabs-container" class="flex gap-1.5 overflow-x-auto no-scrollbar px-4 py-2.5">
+      <button data-tab="dashboard" class="tab-btn flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition text-slate-600 dark:text-slate-300"><i class="fa-solid fa-chart-pie"></i>Résumé</button>
+      <button data-tab="annual" class="tab-btn flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition text-slate-600 dark:text-slate-300"><i class="fa-solid fa-calendar-days"></i>Sur 12 mois</button>
+      <button data-tab="calendar" class="tab-btn flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition text-slate-600 dark:text-slate-300"><i class="fa-solid fa-calendar-check"></i>Calendrier</button>
+      <button data-tab="monthly" class="tab-btn flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition text-slate-600 dark:text-slate-300"><i class="fa-solid fa-calendar-day"></i>Budget mensuel</button>
+      <button data-tab="subscriptions" class="tab-btn flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition text-slate-600 dark:text-slate-300"><i class="fa-solid fa-arrows-rotate"></i>Abonnements</button>
+      <button data-tab="actuals" class="tab-btn flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition text-slate-600 dark:text-slate-300"><i class="fa-solid fa-receipt"></i>Dépenses réelles</button>
+      <button data-tab="scenarios" class="tab-btn flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition text-slate-600 dark:text-slate-300"><i class="fa-solid fa-code-branch"></i>Scénarios</button>
+      <button data-tab="wealth" class="tab-btn flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition text-slate-600 dark:text-slate-300"><i class="fa-solid fa-building-columns"></i>Comptes</button>
+      <button data-tab="invest" class="tab-btn flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition text-slate-600 dark:text-slate-300"><i class="fa-solid fa-chart-line"></i>Investissements</button>
+      <button data-tab="projects" class="tab-btn flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition text-slate-600 dark:text-slate-300"><i class="fa-solid fa-bullseye"></i>Projets & dettes</button>
+      <button data-tab="archives" class="tab-btn flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition text-slate-600 dark:text-slate-300"><i class="fa-solid fa-box-archive"></i>Archives</button>
+      <button data-tab="settings" class="tab-btn flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition text-slate-600 dark:text-slate-300"><i class="fa-solid fa-gear"></i>Paramètres</button>
+    </nav>
+    <button id="theme-toggle" class="hidden" aria-hidden="true"></button>
+  </header>
+  <main id="main-scroll" class="flex-1 overflow-y-auto overscroll-contain">
+    <div class="budget-content mx-auto p-3 sm:p-6 pb-6">
+      <!-- Banner Cycle Expiration Alert -->
+        <div id="cycle-alert-banner" class="hidden mb-6 p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="p-2 bg-amber-500 text-white rounded-xl">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-amber-900 dark:text-amber-200">Cycle de 12 mois écoulé !</h3>
+                    <p class="text-xs text-amber-700 dark:text-amber-300">Votre période précédente est terminée. Archivez-la pour démarrer les 12 prochains mois avec vos données de base.</p>
+                </div>
+            </div>
+            <button id="banner-rollover-btn" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-semibold text-xs rounded-xl shadow transition whitespace-nowrap flex items-center gap-2">
+                <i class="fa-solid fa-box-archive"></i> Archiver &amp; Nouveau Cycle
+            </button>
+        </div>
+
+        
+      <div id="views"></div>
+    </div>
+  </main>
+</div>

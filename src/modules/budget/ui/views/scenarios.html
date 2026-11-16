@@ -1,0 +1,50 @@
+<section id="tab-scenarios" class="tab-content hidden space-y-6">
+    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-700 pb-4">
+            <div>
+                <h2 class="text-lg font-bold flex items-center gap-2">
+                    <i class="fa-solid fa-code-branch text-brand-600"></i> Scénarios « et si... »
+                </h2>
+                <p class="text-sm text-slate-500 dark:text-slate-400">Testez une augmentation, un déménagement ou une nouvelle voiture sans toucher à votre budget.</p>
+            </div>
+            <button id="btn-add-scenario" class="self-start px-3 py-1.5 bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold rounded-xl shadow-sm transition flex items-center gap-1.5">
+                <i class="fa-solid fa-plus"></i> Nouveau scénario
+            </button>
+        </div>
+
+        <div id="scenarios-tabs" class="flex flex-wrap gap-2"></div>
+        <p id="scenarios-empty" class="text-sm text-slate-400 italic text-center p-6 bg-slate-50 dark:bg-slate-700/20 rounded-xl">Aucun scénario. Créez-en un : il part de votre budget actuel, puis changez seulement ce qui vous intéresse.</p>
+
+        <div id="scenario-editor" class="hidden grid grid-cols-1 xl:grid-cols-5 gap-6">
+            <div class="xl:col-span-3 space-y-4">
+                <div class="flex items-center justify-between gap-2">
+                    <h3 id="scenario-name" class="font-bold text-base"></h3>
+                    <div class="flex items-center gap-1">
+                        <button id="btn-rename-scenario" title="Renommer" class="px-2.5 py-1.5 text-xs rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700"><i class="fa-solid fa-pen"></i></button>
+                        <button id="btn-reset-scenario" title="Repartir du budget actuel" class="px-2.5 py-1.5 text-xs rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700"><i class="fa-solid fa-rotate-left"></i></button>
+                        <button id="btn-del-scenario" title="Supprimer" class="px-2.5 py-1.5 text-xs rounded-lg text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                </div>
+                <div id="scenario-fields" class="space-y-4"></div>
+            </div>
+            <div class="xl:col-span-2">
+                <div class="xl:sticky xl:top-0 space-y-4">
+                    <div class="rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="bg-slate-100 dark:bg-slate-700 text-xs text-slate-600 dark:text-slate-300 uppercase">
+                                    <th class="p-3 text-left">Par mois</th><th class="p-3 text-right">Actuel</th><th class="p-3 text-right">Scénario</th><th class="p-3 text-right">Écart</th>
+                                </tr>
+                            </thead>
+                            <tbody id="scenario-compare" class="divide-y divide-slate-200 dark:divide-slate-700"></tbody>
+                        </table>
+                    </div>
+                    <button id="btn-apply-scenario" class="w-full px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl shadow-sm flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-check"></i> Appliquer ce scénario à mon budget
+                    </button>
+                    <p class="text-[11px] text-slate-400">Appliquer remplace les montants du budget de base par ceux du scénario. Les montants propres à un mois sont conservés.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

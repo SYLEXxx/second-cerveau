@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#7c3aed">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./icon-192.png">
+  <title>Second cerveau</title>
+</head>
+<body class="h-full overflow-hidden bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100">
+  <div id="app" class="h-full flex flex-col">
+    <div id="screen" class="flex-1 min-h-0 overflow-y-auto overscroll-contain"></div>
+    <div id="budget-root" class="hidden flex-1 min-h-0 flex-col"></div>
+    <nav id="bottom-nav" class="flex-shrink-0 grid grid-cols-5 bg-white/95 dark:bg-slate-800/95 backdrop-blur border-t border-slate-200 dark:border-slate-700" style="padding-bottom:env(safe-area-inset-bottom)">
+      <a href="#/" data-nav="home" class="nav-btn"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
+      <a href="#/pages" data-nav="pages" class="nav-btn"><i class="fa-solid fa-folder-tree"></i><span>Pages</span></a>
+      <a href="#/search" data-nav="search" class="nav-btn"><i class="fa-solid fa-magnifying-glass"></i><span>Recherche</span></a>
+      <a href="#/graph" data-nav="graph" class="nav-btn"><i class="fa-solid fa-circle-nodes"></i><span>Graphe</span></a>
+      <a href="#/budget" data-nav="budget" class="nav-btn"><i class="fa-solid fa-wallet"></i><span>Budget</span></a>
+    </nav>
+  </div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

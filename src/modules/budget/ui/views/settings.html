@@ -1,0 +1,94 @@
+<section id="tab-settings" class="tab-content hidden space-y-6">
+    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+        <h2 class="text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-gear text-brand-600"></i> Paramètres</h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400">Sécurité, budget à deux, exports et sauvegardes.</p>
+    </div>
+
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+        <!-- Sécurité -->
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
+            <h3 class="font-bold text-base flex items-center gap-2"><i class="fa-solid fa-shield-halved text-amber-500"></i> Mot de passe et chiffrement</h3>
+            <div id="security-status" class="p-3 rounded-xl text-sm"></div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Avec un mot de passe, vos données et vos pièces jointes sont chiffrées sur le disque (AES 256 bits) : sans lui, personne ne peut les lire. <strong class="text-rose-600">Un mot de passe oublié ne peut pas être récupéré</strong> : gardez une sauvegarde exportée en lieu sûr.</p>
+            <div class="flex flex-wrap gap-2">
+                <button id="btn-set-password" class="px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold rounded-xl shadow-sm flex items-center gap-1.5"><i class="fa-solid fa-key"></i> <span id="btn-set-password-label">Définir un mot de passe</span></button>
+                <button id="btn-remove-password" class="hidden px-3 py-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-xs font-semibold rounded-xl flex items-center gap-1.5"><i class="fa-solid fa-lock-open"></i> Retirer le mot de passe</button>
+            </div>
+        </div>
+
+        <!-- Budget à deux -->
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
+            <div class="flex items-center justify-between gap-2">
+                <h3 class="font-bold text-base flex items-center gap-2"><i class="fa-solid fa-user-group text-pink-500"></i> Budget à deux</h3>
+                <label class="flex items-center gap-2 text-xs font-semibold cursor-pointer">
+                    <input type="checkbox" id="couple-enabled" class="accent-pink-500 w-4 h-4"> Activer
+                </label>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Les revenus de la 2e personne s'ajoutent au budget. Les dépenses communes sont réparties entre vous, et chaque dépense réelle peut indiquer qui l'a payée pour savoir qui doit combien à qui.</p>
+            <div id="couple-fields" class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                <div><label class="block text-xs font-semibold text-slate-500 mb-1">1re personne (revenus du budget)</label><input type="text" id="couple-name-a" class="w-full p-2 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl"></div>
+                <div><label class="block text-xs font-semibold text-slate-500 mb-1">2e personne</label><input type="text" id="couple-name-b" class="w-full p-2 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl"></div>
+                <div><label class="block text-xs font-semibold text-slate-500 mb-1">Revenus mensuels de la 2e personne (€)</label><input type="number" id="couple-income-b" min="0" step="any" class="w-full p-2 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl font-bold text-emerald-600"></div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">Répartition des dépenses</label>
+                    <select id="couple-split" class="w-full p-2 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl">
+                        <option value="prorata">Au prorata des revenus</option>
+                        <option value="equal">Moitié-moitié</option>
+                        <option value="custom">Pourcentage choisi</option>
+                    </select>
+                </div>
+                <div id="couple-share-wrap" class="sm:col-span-2">
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">Part de la 1re personne : <span id="couple-share-display">50 %</span></label>
+                    <input type="range" id="couple-share-a" min="0" max="100" step="5" class="w-full">
+                </div>
+            </div>
+            <p id="couple-summary" class="text-xs font-semibold text-pink-600 dark:text-pink-400"></p>
+        </div>
+
+        <!-- Exports -->
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
+            <h3 class="font-bold text-base flex items-center gap-2"><i class="fa-solid fa-file-export text-emerald-600"></i> Exports et rapports</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <button id="btn-export-excel" class="p-4 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 text-left transition">
+                    <i class="fa-solid fa-file-excel text-emerald-600 text-xl"></i>
+                    <div class="text-sm font-semibold mt-2">Classeur Excel</div>
+                    <div class="text-[11px] text-slate-500">Synthèse, dépenses, dettes, comptes...</div>
+                </button>
+                <button id="btn-report-month" class="p-4 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 text-left transition">
+                    <i class="fa-solid fa-file-pdf text-rose-600 text-xl"></i>
+                    <div class="text-sm font-semibold mt-2">Rapport du mois</div>
+                    <div class="text-[11px] text-slate-500">Prévu, réel et détail des dépenses</div>
+                </button>
+                <button id="btn-report-year" class="p-4 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 text-left transition">
+                    <i class="fa-solid fa-file-pdf text-rose-600 text-xl"></i>
+                    <div class="text-sm font-semibold mt-2">Bilan 12 mois</div>
+                    <div class="text-[11px] text-slate-500">Mois par mois, patrimoine, dettes</div>
+                </button>
+            </div>
+            <div class="flex items-center gap-2 text-xs">
+                <label for="report-month" class="text-slate-500">Mois du rapport :</label>
+                <select id="report-month" class="p-1.5 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg"></select>
+            </div>
+            <p class="text-[11px] text-slate-400">Les rapports s'ouvrent dans la fenêtre d'impression : choisissez « Enregistrer au format PDF » (ou « Microsoft Print to PDF ») pour obtenir un fichier.</p>
+        </div>
+
+        <!-- Sauvegardes et raccourcis -->
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
+            <h3 class="font-bold text-base flex items-center gap-2"><i class="fa-solid fa-floppy-disk text-brand-600"></i> Sauvegardes</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Vos données sont enregistrées automatiquement à chaque modification. Une sauvegarde exportée permet de les retrouver sur un autre PC ; elle n'est pas chiffrée.</p>
+            <div class="flex flex-wrap gap-2">
+                <button id="btn-settings-export" class="px-3 py-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-xs font-semibold rounded-xl flex items-center gap-1.5"><i class="fa-solid fa-download"></i> Exporter une sauvegarde</button>
+                <button id="btn-settings-import" class="px-3 py-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-xs font-semibold rounded-xl flex items-center gap-1.5"><i class="fa-solid fa-upload"></i> Charger une sauvegarde</button>
+            </div>
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 pt-2">Raccourcis clavier</h4>
+            <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-slate-600 dark:text-slate-300">
+                <span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-700 font-sans">Ctrl 1</kbd> à <kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-700 font-sans">Ctrl 9</kbd> onglets</span>
+                <span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-700 font-sans">Ctrl N</kbd> nouvelle dépense</span>
+                <span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-700 font-sans">Ctrl F</kbd> rechercher une dépense</span>
+                <span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-700 font-sans">Ctrl S</kbd> / <kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-700 font-sans">Ctrl O</kbd> exporter / charger</span>
+                <span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-700 font-sans">Ctrl L</kbd> verrouiller</span>
+                <span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-700 font-sans">Échap</kbd> fermer une fenêtre</span>
+            </div>
+        </div>
+    </div>
+</section>

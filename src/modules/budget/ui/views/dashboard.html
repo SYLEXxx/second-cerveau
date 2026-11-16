@@ -1,0 +1,117 @@
+<section id="tab-dashboard" class="tab-content space-y-6">
+    <div class="flex items-center justify-between">
+        <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+            <i class="fa-solid fa-chart-pie text-brand-600"></i> Vue d'ensemble <span class="text-sm font-normal text-slate-500">(Mois en cours)</span>
+        </h2>
+    </div>
+    
+    <!-- Cards KPI -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between">
+            <div class="flex justify-between items-start">
+                <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Revenus Nets Total</span>
+                <div class="p-2.5 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 rounded-xl">
+                    <i class="fa-solid fa-circle-arrow-down text-lg"></i>
+                </div>
+            </div>
+            <div class="mt-4">
+                <div id="kpi-income" class="text-2xl font-bold text-slate-900 dark:text-white">0 €</div>
+                <p id="kpi-income-hint" class="text-xs text-slate-500 mt-1">Salaire + Primes + Annexes</p>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between">
+            <div class="flex justify-between items-start">
+                <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Dépenses Prévues</span>
+                <div class="p-2.5 bg-rose-100 dark:bg-rose-900/40 text-rose-600 dark:text-rose-400 rounded-xl">
+                    <i class="fa-solid fa-circle-arrow-up text-lg"></i>
+                </div>
+            </div>
+            <div class="mt-4">
+                <div id="kpi-expenses" class="text-2xl font-bold text-slate-900 dark:text-white">0 €</div>
+                <p class="text-xs text-slate-500 mt-1">Logement, Auto, Nourriture, Abos</p>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between">
+            <div class="flex justify-between items-start">
+                <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Épargne &amp; Invest.</span>
+                <div class="p-2.5 bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-400 rounded-xl">
+                    <i class="fa-solid fa-vault text-lg"></i>
+                </div>
+            </div>
+            <div class="mt-4">
+                <div id="kpi-invest" class="text-2xl font-bold text-slate-900 dark:text-white">0 €</div>
+                <p class="text-xs text-slate-500 mt-1"><span id="kpi-invest-rate" class="font-semibold text-purple-600">0%</span> des revenus</p>
+            </div>
+        </div>
+
+        <div id="kpi-net-card" class="bg-gradient-to-br from-brand-600 to-brand-700 text-white p-5 rounded-2xl shadow-md flex flex-col justify-between">
+            <div class="flex justify-between items-start">
+                <span class="text-xs font-semibold uppercase tracking-wider text-brand-100">Solde Net Prévu</span>
+                <div class="p-2.5 bg-white/10 rounded-xl backdrop-blur">
+                    <i class="fa-solid fa-piggy-bank text-lg text-white"></i>
+                </div>
+            </div>
+            <div class="mt-4">
+                <div id="kpi-net" class="text-3xl font-extrabold">0 €</div>
+                <p class="text-xs text-brand-100 mt-1">Reste à vivre (Fin de mois)</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- À surveiller -->
+    <div id="dash-alerts" class="hidden grid grid-cols-1 md:grid-cols-3 gap-3"></div>
+
+    <!-- Budget à deux -->
+    <div id="dash-couple" class="hidden bg-white dark:bg-slate-800 p-5 rounded-2xl border border-pink-200 dark:border-pink-900/50 shadow-sm">
+        <h3 class="font-bold text-sm mb-3 flex items-center gap-2"><i class="fa-solid fa-user-group text-pink-500"></i> Budget à deux <span id="dash-couple-split" class="text-xs font-normal text-slate-500"></span></h3>
+        <div id="dash-couple-body" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+    </div>
+
+    <!-- Charts (50% / 50%) -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Breakdown (Donut) -->
+        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col items-center">
+            <h3 class="text-base font-semibold w-full text-left mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-chart-pie text-brand-600"></i> Répartition des Sorties d'Argent
+            </h3>
+            <div class="relative w-full h-72 flex justify-center">
+                <canvas id="chart-breakdown"></canvas>
+            </div>
+        </div>
+
+        <!-- Summary (Bar) -->
+        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col">
+            <h3 class="text-base font-semibold mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-scale-balanced text-brand-600"></i> Balance Mensuelle (Comparatif)
+            </h3>
+            <div class="h-72 w-full">
+                <canvas id="chart-summary"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Table Summary -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+        <div class="p-5 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center">
+            <h3 class="text-base font-semibold flex items-center gap-2">
+                <i class="fa-solid fa-list-check text-brand-600"></i> Synthèse Récapitulative
+            </h3>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50 dark:bg-slate-700/50 text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                        <th class="p-4">Poste de Budget</th>
+                        <th class="p-4">Catégorie</th>
+                        <th class="p-4 text-right">Montant Mensuel</th>
+                        <th class="p-4 text-right">% du Revenu</th>
+                    </tr>
+                </thead>
+                <tbody id="summary-table-body" class="divide-y divide-slate-200 dark:divide-slate-700 text-sm">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

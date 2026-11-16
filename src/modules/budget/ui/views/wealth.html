@@ -1,0 +1,75 @@
+<section id="tab-wealth" class="tab-content hidden space-y-6">
+    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-700 pb-4">
+            <div>
+                <h2 class="text-lg font-bold flex items-center gap-2">
+                    <i class="fa-solid fa-building-columns text-brand-600"></i> Comptes &amp; valeur nette
+                </h2>
+                <p class="text-sm text-slate-500 dark:text-slate-400">Ce que vous possédez moins ce que vous devez, et son évolution mois après mois.</p>
+            </div>
+            <button id="btn-add-account" class="self-start px-3 py-1.5 bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold rounded-xl shadow-sm transition flex items-center gap-1.5">
+                <i class="fa-solid fa-plus"></i> Nouveau compte
+            </button>
+        </div>
+
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="p-4 rounded-2xl bg-gradient-to-br from-brand-600 to-brand-700 text-white shadow-md">
+                <div class="text-[11px] uppercase font-semibold tracking-wide opacity-90">Valeur nette</div>
+                <div id="nw-total" class="text-2xl font-extrabold mt-1">0 €</div>
+                <div id="nw-trend" class="text-[11px] opacity-90 mt-1"></div>
+            </div>
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-700/30 border border-slate-200 dark:border-slate-700">
+                <div class="text-[11px] uppercase font-semibold text-slate-500">Comptes</div>
+                <div id="nw-accounts" class="text-xl font-bold mt-1 text-slate-800 dark:text-slate-100">0 €</div>
+            </div>
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-700/30 border border-slate-200 dark:border-slate-700">
+                <div class="text-[11px] uppercase font-semibold text-slate-500">Placements</div>
+                <div id="nw-investments" class="text-xl font-bold mt-1 text-purple-600 dark:text-purple-400">0 €</div>
+            </div>
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-700/30 border border-slate-200 dark:border-slate-700">
+                <div class="text-[11px] uppercase font-semibold text-slate-500">Dettes</div>
+                <div id="nw-debts" class="text-xl font-bold mt-1 text-rose-600 dark:text-rose-400">0 €</div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            <div>
+                <h3 class="font-bold text-sm text-slate-700 dark:text-slate-200 mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-wallet text-brand-600"></i> Mes comptes
+                </h3>
+                <div id="accounts-list" class="space-y-2"></div>
+                <p class="text-[11px] text-slate-400 mt-2">Les tirelires de l'onglet Projets sont considérées comme déjà comprises dans ces comptes.</p>
+            </div>
+            <div>
+                <h3 class="font-bold text-sm text-slate-700 dark:text-slate-200 mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-area text-brand-600"></i> Évolution de la valeur nette
+                </h3>
+                <div class="h-56 bg-slate-50 dark:bg-slate-700/20 rounded-2xl border border-slate-200 dark:border-slate-700 p-3">
+                    <canvas id="chart-networth"></canvas>
+                </div>
+                <p id="nw-history-hint" class="text-[11px] text-slate-400 mt-2">Un point est noté chaque mois où vous ouvrez l'application.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
+        <div>
+            <h3 class="font-bold text-base flex items-center gap-2"><i class="fa-solid fa-scale-balanced text-purple-500"></i> Placements : valeur réelle et projection</h3>
+            <p class="text-sm text-slate-500 dark:text-slate-400">Saisissez la valeur actuelle de vos placements pour la comparer à ce que prévoyait le simulateur (capital de départ, versements et rendement depuis le début du cycle).</p>
+        </div>
+        <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700">
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="bg-slate-100 dark:bg-slate-700 text-xs text-slate-600 dark:text-slate-300 uppercase tracking-wider">
+                        <th class="p-3 text-left">Placement</th>
+                        <th class="p-3 text-right">Capital de départ</th>
+                        <th class="p-3 text-right">Valeur prévue aujourd'hui</th>
+                        <th class="p-3 text-right">Valeur réelle</th>
+                        <th class="p-3 text-right">Écart</th>
+                    </tr>
+                </thead>
+                <tbody id="invest-real-body" class="divide-y divide-slate-200 dark:divide-slate-700"></tbody>
+            </table>
+        </div>
+    </div>
+</section>

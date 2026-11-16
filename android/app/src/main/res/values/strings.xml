@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Second cerveau</string>
+    <string name="title_activity_main">Second cerveau</string>
+    <string name="package_name">fr.secondcerveau.app</string>
+    <string name="custom_url_scheme">fr.secondcerveau.app</string>
+</resources>
