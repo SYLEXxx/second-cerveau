@@ -3,7 +3,7 @@ import { VaultStore } from '../core/store';
 import { createPage, dailyNote, findByTitle } from '../core/vault';
 import type { NewPage } from '../core/vault';
 import type { BudgetHandle } from '../modules/budget';
-import { isNative } from '../platform/files';
+import { isDesktop, isNative } from '../platform/files';
 import { $$ } from './dom';
 import { closeTopSheet } from './sheet';
 import { applyTheme } from './theme';
@@ -64,6 +64,8 @@ const NAV_OF: Record<string, string> = { home: 'home', pages: 'pages', page: 'pa
 
 export async function startApp(): Promise<void> {
   applyTheme();
+  if (isDesktop()) await importDesktopBudget();
+  else if (!isNative()) registerOffline();
   const { state } = await loadVault();
   const store = new VaultStore(state);
   void store.flush();
@@ -176,4 +178,28 @@ export async function startApp(): Promise<void> {
       void budgetPromise?.then((b) => b.flush());
     });
   }
+}
+
+/**
+ * Premier lancement sur PC : reprend le budget de MonBudgetPro (application de bureau)
+ * s'il est installé, tant que le second cerveau n'a pas encore de budget.
+ */
+async function importDesktopBudget(): Promise<void> {
+  try {
+    if (localStorage.getItem('monbudgetpro_data')) return;
+    const { invoke } = await import('@tauri-apps/api/core');
+    const raw = await invoke<string | null>('legacy_budget');
+    if (raw) localStorage.setItem('monbudgetpro_data', raw);
+  } catch (e) {
+    console.warn('Budget MonBudgetPro non repris', e);
+  }
+}
+
+/** Version web : fonctionne hors ligne une fois installée (service worker). */
+function registerOffline(): void {
+  void import('virtual:pwa-register')
+    .then(({ registerSW }) => registerSW({ immediate: true }))
+    .catch(() => {
+      /* aperçu en un seul fichier : pas de service worker */
+    });
 }

@@ -3,6 +3,8 @@ import { Capacitor } from '@capacitor/core';
 // Fichiers : téléchargement dans un navigateur, feuille de partage Android/iOS dans l'application.
 
 export const isNative = (): boolean => Capacitor.isNativePlatform();
+/** Application de bureau (Tauri, Windows / macOS / Linux). */
+export const isDesktop = (): boolean => typeof window !== 'undefined' && '__TAURI_INTERNALS__' in window;
 
 function blobToBase64(blob: Blob): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -14,6 +16,16 @@ function blobToBase64(blob: Blob): Promise<string> {
 }
 
 export async function saveBlob(name: string, blob: Blob): Promise<boolean> {
+  if (isDesktop()) {
+    // PC : boîte « Enregistrer sous » puis écriture par la partie native (src-tauri).
+    const { save } = await import('@tauri-apps/plugin-dialog');
+    const { invoke } = await import('@tauri-apps/api/core');
+    const ext = name.includes('.') ? name.split('.').pop()! : '';
+    const path = await save({ defaultPath: name, filters: ext ? [{ name: ext.toUpperCase(), extensions: [ext] }] : [] });
+    if (!path) return false;
+    await invoke('write_binary_file', { path, base64: await blobToBase64(blob) });
+    return true;
+  }
   if (isNative()) {
     const { Filesystem, Directory } = await import('@capacitor/filesystem');
     const { Share } = await import('@capacitor/share');

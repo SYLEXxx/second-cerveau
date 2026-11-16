@@ -16,11 +16,11 @@ export default defineConfig(({ mode }) => ({
   },
   plugins:
     mode === 'single'
-      ? [viteSingleFile()]
+      ? [viteSingleFile(), { name: 'sans-pwa', resolveId: (id: string) => (id === 'virtual:pwa-register' ? '\0pwa-off' : null), load: (id: string) => (id === '\0pwa-off' ? 'export const registerSW = () => () => {};' : null) }]
       : [
           VitePWA({
             registerType: 'autoUpdate',
-            injectRegister: 'auto',
+            injectRegister: null, // enregistré par src/ui/app.ts (pas dans l'app PC ni Android)
             includeAssets: ['icon.svg'],
             workbox: { globPatterns: ['**/*.{js,css,html,svg,png,woff2}'], maximumFileSizeToCacheInBytes: 6_000_000 },
             manifest: {

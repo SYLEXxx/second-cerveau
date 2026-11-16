@@ -74,3 +74,16 @@ body.editing #screen { padding-bottom: 60vh; }
 body.canvas-open #bottom-nav { display: none; }
 .prose-note .ink-thumb svg { width: 100%; height: auto; max-height: 320px; }
 .dark .prose-note .ink-thumb svg path[stroke="#1e293b"] { stroke: #e2e8f0; }
+
+/* Grand écran (PC, tablette en paysage) : la barre du bas devient un menu latéral. */
+@media (min-width: 1024px) {
+  #app { flex-direction: row; }
+  #screen, #budget-root { min-width: 0; }
+  #bottom-nav { order: -1; display: flex; flex-direction: column; justify-content: flex-start; gap: 4px; width: 84px; padding-top: 16px; border-top: 0; border-right: 1px solid rgb(226 232 240); }
+  .dark #bottom-nav { border-right-color: rgb(51 65 85); }
+  #bottom-nav .nav-btn { padding: 10px 0; border-radius: 12px; margin: 0 8px; }
+  #bottom-nav .nav-btn.active { background: rgb(237 233 254); }
+  .dark #bottom-nav .nav-btn.active { background: rgb(76 29 149 / 0.4); }
+  .graph-wrap { height: 100dvh !important; }
+  #budget-root .budget-content { padding: 1.5rem; }
+}

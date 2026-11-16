@@ -15,7 +15,7 @@ function loadOpts(): GraphOptions {
 
 export const graphView: ViewFn = (ctx, screen, route) => {
   const opts = loadOpts();
-  screen.innerHTML = `<div class="relative h-full" style="height:calc(100dvh - 64px - env(safe-area-inset-bottom))">
+  screen.innerHTML = `<div class="graph-wrap relative h-full" style="height:calc(100dvh - 64px - env(safe-area-inset-bottom))">
     <canvas class="absolute inset-0 w-full h-full touch-none"></canvas>
     <div class="absolute top-0 left-0 right-0 safe-top pointer-events-none">
       <div class="flex items-center justify-between px-4 pt-3">

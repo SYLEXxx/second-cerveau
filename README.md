@@ -65,6 +65,18 @@ Avec Android Studio installé, `npm run android` ouvre le projet, prêt à lance
 2. Ouvrez l'adresse affichée sur le téléphone, puis **Ajouter à l'écran d'accueil**
    (menu ⋮ sur Chrome, bouton Partager sur Safari). L'application fonctionne ensuite hors ligne.
 
+### PC Windows (installateur .exe)
+
+Le workflow « Application PC (Windows) » construit l'installateur à chaque envoi sur `main` :
+onglet **Actions** > dernière exécution > **Artifacts** > `second-cerveau-windows`, puis lancer le `.exe`
+(installation pour l'utilisateur, sans droits administrateur). Windows SmartScreen peut avertir
+(application non signée) : « Informations complémentaires » > « Exécuter quand même ».
+
+Au premier lancement, si MonBudgetPro (application de bureau) est installé sur le PC, son budget
+est repris automatiquement. Sur grand écran, la barre du bas devient un menu latéral.
+
+En local (Node + Rust installés) : `npm run desktop` pour tester, `npm run desktop:build` pour l'installateur.
+
 ### iPhone (application native)
 
 Le projet est prêt pour Capacitor iOS : sur un Mac avec Xcode,
@@ -87,7 +99,7 @@ npm run apk            # APK de débogage (nécessite le SDK Android)
 
 - **Même stack que MonBudgetPro** : Vite + TypeScript sans framework + Tailwind 3.
   Le code du budget est repris sans réécriture (`src/modules/budget`), avec ses tests.
-- **Capacitor** au lieu de Tauri pour le mobile : Tauri Mobile demande Rust + NDK et a moins
+- **Tauri 2** pour le PC, comme MonBudgetPro ; **Capacitor** au lieu de Tauri pour le mobile : Tauri Mobile demande Rust + NDK et a moins
   de modules prêts pour le téléphone ; Capacitor emballe directement l'application web
   et fournit le partage de fichiers, le bouton retour Android, etc.
 - **Stockage local** : notes dans IndexedDB (avec copie de secours de la version précédente),
@@ -104,6 +116,7 @@ src/
   platform/       fichiers : téléchargement (web) ou feuille de partage (Android/iOS)
 tests/            tests des notes (core/) et tests d'origine du budget (budget/)
 android/          projet Android généré par Capacitor
+src-tauri/        application PC (Tauri 2, reprise de MonBudgetPro)
 ```
 
 ## Limites connues (v0.1)

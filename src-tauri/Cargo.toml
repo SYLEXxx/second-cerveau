@@ -1,0 +1,25 @@
+[package]
+name = "second-cerveau"
+version = "0.1.0"
+description = "Second cerveau - notes, bases, tableau blanc et budget"
+edition = "2021"
+
+[lib]
+name = "second_cerveau_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-dialog = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+base64 = "0.22"
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "s"
+strip = true
