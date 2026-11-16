@@ -27,7 +27,7 @@ const saveOpen = (s: Set<string>) => {
 function tree(s: VaultState, parentId: string | null, depth: number, open: Set<string>): string {
   return children(s, parentId)
     .map((p) => {
-      const kids = p.kind === 'database' ? [] : children(s, p.id);
+      const kids = p.kind === 'page' ? children(s, p.id) : [];
       const isOpen = open.has(p.id);
       const count = p.kind === 'database' ? `<span class="text-xs text-slate-400">${rows(s, p).length}</span>` : '';
       return `<div>
@@ -53,7 +53,8 @@ export const pagesView: ViewFn = (ctx, screen) => {
   const dbs = livePages(s).filter((p) => p.kind === 'database');
 
   screen.innerHTML = `${header('Pages', {
-    actions: `<button class="icon-btn" data-action="new-db" aria-label="Nouvelle base"><i class="fa-solid fa-table"></i></button>
+    actions: `<button class="icon-btn" data-action="new-ink" aria-label="Nouveau tableau blanc"><i class="fa-solid fa-signature"></i></button>
+      <button class="icon-btn" data-action="new-db" aria-label="Nouvelle base"><i class="fa-solid fa-table"></i></button>
       <button class="icon-btn !text-violet-600" data-action="new" aria-label="Nouvelle page"><i class="fa-solid fa-plus text-xl"></i></button>`,
   })}
   <div class="max-w-2xl mx-auto px-3 pb-8">
@@ -70,6 +71,7 @@ export const pagesView: ViewFn = (ctx, screen) => {
     back: () => history.back(),
     new: () => ctx.newPage(),
     'new-db': () => ctx.newPage({ kind: 'database', title: 'Nouvelle base' }),
+    'new-ink': () => ctx.newPage({ kind: 'canvas', title: 'Croquis' }),
     toggle: (b) => {
       const id = b.dataset.id!;
       if (open.has(id)) open.delete(id);
@@ -95,6 +97,7 @@ function pageMenu(ctx: Parameters<ViewFn>[0], p: Page, expand: () => void): void
       ? [
           { label: 'Nouvelle sous-page', icon: 'fa-file-circle-plus', run: () => (expand(), ctx.newPage({ parentId: p.id })) },
           { label: 'Nouvelle base ici', icon: 'fa-table', run: () => (expand(), ctx.newPage({ parentId: p.id, kind: 'database', title: 'Nouvelle base' })) },
+          { label: 'Nouveau tableau blanc ici', icon: 'fa-signature', run: () => (expand(), ctx.newPage({ parentId: p.id, kind: 'canvas', title: 'Croquis' })) },
         ]
       : []),
     { label: p.favorite ? 'Retirer des favoris' : 'Ajouter aux favoris', icon: 'fa-star', run: () => ctx.store.update(() => void (p.favorite = !p.favorite)) },

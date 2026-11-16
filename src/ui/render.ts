@@ -5,6 +5,7 @@ import { activeView, formatValue, viewRows } from '../core/db';
 import { budgetWidgetHtml } from '../modules/budget/widget';
 import { pageIcon } from './components';
 import { esc } from './dom';
+import { inkToSvg } from '../core/ink';
 
 // Affichage d'une note : markdown + interactions façon Obsidian (étiquettes, cases à cocher,
 // encadrés, intégrations ![[...]] et bloc budget).
@@ -79,6 +80,10 @@ function embedHtml(s: VaultState, target: string, depth: number): string {
   const p = findByTitle(s, target);
   if (!p) return `<span class="embed-card text-slate-400">Page introuvable : ${esc(target)}</span>`;
   const head = `<a class="wikilink !bg-transparent font-semibold" data-target="${esc(p.title)}">${pageIcon(p)} ${esc(displayTitle(p))}</a>`;
+  if (p.kind === 'canvas' && p.ink) {
+    const svg = p.ink.strokes.length ? inkToSvg(p.ink) : '<span class="text-slate-400 text-sm">Tableau vide : touchez pour dessiner.</span>';
+    return `<a class="embed-card ink-embed no-underline text-inherit" href="#/p/${p.id}"><span class="block font-semibold mb-1">${pageIcon(p)} ${esc(displayTitle(p))}</span><span class="ink-thumb block">${svg}</span></a>`;
+  }
   if (p.kind === 'database') {
     const view = activeView(p.schema!);
     const list = viewRows(s, p, view).slice(0, 8);

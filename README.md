@@ -17,6 +17,17 @@ Tout fonctionne hors ligne et les données restent sur le téléphone.
 - Note du jour (rangée sous « Journal »), graphe interactif (pincer, glisser, toucher).
 - Export de toutes les notes en `.md` (zip compatible Obsidian) et import de fichiers `.md`.
 
+**Prise de notes manuscrite (tablette + stylet)**
+- Pages « Tableau blanc » infinies : encre vectorielle sensible à la pression, zoom de 10 % à 800 % sans perte.
+- Outils : stylo (8 couleurs, 3 épaisseurs), surligneur, gomme (aussi le bout gomme du stylet),
+  lasso pour déplacer, dupliquer, recolorer ou supprimer, main pour se déplacer ; annuler / rétablir.
+- Rejet de la paume : dès qu'un stylet est détecté, le stylet écrit et les doigts déplacent / zooment
+  (un doigt glisse, deux doigts pincent). Sans stylet (téléphone), le doigt dessine. Réglable dans le menu ⋮.
+- Fonds à points, quadrillé, ligné ou uni ; export PNG et SVG.
+- Un tableau s'intègre dans une note avec `![[Nom du tableau]]` (aperçu cliquable), et la commande
+  `/` « Tableau blanc » en crée un depuis l'éditeur. Les tableaux apparaissent dans le graphe.
+- Export Obsidian : chaque tableau devient une image `.svg` intégrée dans sa note `.md`.
+
 **Pages et bases (Notion)**
 - Pages et sous-pages à l'infini, icônes emoji, favoris, corbeille avec restauration.
 - Commandes `/` dans l'éditeur (titres, tâches, encadrés, tableau, sous-page, base, résumé du budget).
@@ -66,7 +77,7 @@ Prérequis : Node.js 20 ou plus.
 ```bash
 npm install
 npm run dev            # http://localhost:5173 (et sur le réseau local pour tester au téléphone)
-npm test               # 61 tests : notes, bases, graphe + tests d'origine du budget
+npm test               # 66 tests : notes, bases, graphe, encre + tests d'origine du budget
 npm run build          # version web (dist/) avec service worker hors ligne
 npm run build:preview  # un seul fichier HTML autonome (dist-single/)
 npm run apk            # APK de débogage (nécessite le SDK Android)
@@ -99,5 +110,6 @@ android/          projet Android généré par Capacitor
 
 - Pas de synchronisation entre appareils (export/import manuel).
 - L'éditeur est en markdown (comme Obsidian), pas en blocs glissables comme Notion.
+- Tableau blanc : pas encore de reconnaissance d'écriture, de zones de texte tapé ni d'insertion d'images.
 - Le rapport imprimable du budget (« Enregistrer en PDF ») ne fonctionne pas dans l'application Android ;
   l'export Excel fonctionne.

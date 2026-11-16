@@ -3,6 +3,7 @@ import type { Page, VaultState } from './types';
 import { children, displayTitle, isDbRow } from './vault';
 import { formatValue } from './db';
 import { createPage } from './vault';
+import { inkToSvg } from './ink';
 
 // Export vers un dossier de fichiers .md compatible Obsidian, et import de fichiers .md.
 
@@ -41,6 +42,11 @@ export function vaultToFiles(s: VaultState): Record<string, string> {
           .map((r) => `| [[${displayTitle(r)}]] | ${db.props.map((x) => formatValue(x, r.props[x.id]).replace(/\|/g, '/')).join(' | ')} |`)
           .join('\n');
         body = `${p.content}\n\n${head}${rowsMd}\n`;
+      }
+      if (p.kind === 'canvas' && p.ink) {
+        // Un tableau blanc devient une image SVG intégrée dans sa note.
+        files[`${dir}${name}.svg`] = inkToSvg(p.ink, { background: '#ffffff' });
+        body = `![[${name}.svg]]\n\n${p.content}`;
       }
       const hasKids = children(s, p.id).length > 0;
       files[hasKids ? `${dir}${name}/${name}.md` : `${dir}${name}.md`] = body;

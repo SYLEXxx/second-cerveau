@@ -86,7 +86,7 @@ export async function startApp(): Promise<void> {
       store.update((s) => {
         id = createPage(s, init).id;
       });
-      ctx.go(`/p/${id}${init.content || init.kind === 'database' ? '' : '?edit=1'}`);
+      ctx.go(`/p/${id}${init.content || init.kind === 'database' || init.kind === 'canvas' ? '' : '?edit=1'}`);
     },
     openTitle(title) {
       const found = findByTitle(store.get(), title);

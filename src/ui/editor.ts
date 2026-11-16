@@ -13,7 +13,7 @@ export interface EditorHooks {
   onChange: (text: string) => void;
   onDone: () => void;
   /** Commandes « / » qui créent une page (sous-page, base) et renvoient le texte à insérer. */
-  createChild: (kind: 'page' | 'database') => Promise<string | null>;
+  createChild: (kind: 'page' | 'database' | 'canvas') => Promise<string | null>;
 }
 
 interface Suggestion {
@@ -174,6 +174,7 @@ export function mountEditor(container: HTMLElement, initial: string, hooks: Edit
     { key: 'date aujourdhui', label: 'Date du jour', icon: '<i class="fa-regular fa-calendar"></i>', text: `[[${todayIso()}]] ` },
     { key: 'page sous-page', label: 'Sous-page', icon: '<i class="fa-regular fa-file"></i>', run: () => hooks.createChild('page') },
     { key: 'base database tableau', label: 'Base de données', icon: '<i class="fa-solid fa-table"></i>', run: () => hooks.createChild('database') },
+    { key: 'tableau blanc dessin croquis manuscrit stylet', label: 'Tableau blanc (stylet)', icon: '<i class="fa-solid fa-signature"></i>', run: () => hooks.createChild('canvas') },
     { key: 'budget argent', label: 'Résumé du budget', icon: '<i class="fa-solid fa-wallet"></i>', text: '```budget\n```\n' },
   ];
 

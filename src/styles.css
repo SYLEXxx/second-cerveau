@@ -67,3 +67,10 @@ details > summary::-webkit-details-marker { display: none; }
 .editor-area { @apply w-full bg-transparent outline-none resize-none text-[15px] leading-relaxed; min-height: 50vh; }
 body.editing #bottom-nav { display: none; }
 body.editing #screen { padding-bottom: 60vh; }
+
+/* Tableau blanc manuscrit */
+.wb { --paper: #fbfbf8; }
+.dark .wb { --paper: #111827; }
+body.canvas-open #bottom-nav { display: none; }
+.prose-note .ink-thumb svg { width: 100%; height: auto; max-height: 320px; }
+.dark .prose-note .ink-thumb svg path[stroke="#1e293b"] { stroke: #e2e8f0; }

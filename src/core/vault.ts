@@ -52,6 +52,7 @@ export interface NewPage {
   icon?: string;
   props?: Page['props'];
   schema?: DbSchema;
+  ink?: Page['ink'];
 }
 
 export function createPage(s: VaultState, init: NewPage = {}): Page {
@@ -61,11 +62,12 @@ export function createPage(s: VaultState, init: NewPage = {}): Page {
     id: uid(),
     kind,
     title: init.title ?? '',
-    icon: init.icon ?? (kind === 'database' ? '🗂️' : ''),
+    icon: init.icon ?? (kind === 'database' ? '🗂️' : kind === 'canvas' ? '✍️' : ''),
     parentId: init.parentId ?? null,
     content: init.content ?? '',
     props: init.props ?? {},
     schema: kind === 'database' ? init.schema ?? defaultSchema() : undefined,
+    ink: kind === 'canvas' ? init.ink ?? { strokes: [], bg: 'dots' } : undefined,
     favorite: false,
     createdAt: now,
     updatedAt: now,
@@ -282,6 +284,7 @@ export function seedVault(s: VaultState): void {
 ## Pour commencer
 - [ ] Lire [[Liens et graphe]]
 - [ ] Ouvrir la base [[Projets]]
+- [ ] Écrire au stylet dans le [[Tableau blanc]]
 - [ ] Créer la note du jour depuis l'accueil
 - [ ] Ouvrir le module **Budget** (onglet en bas)
 
@@ -307,6 +310,29 @@ Le bloc ci-dessous affiche le mois en cours de MonBudgetPro :
 
 Retour à [[Bienvenue]].
 `,
+  });
+  // Petit croquis d'exemple : un cercle tremblé et une flèche, comme dessinés à la main.
+  const circle: number[] = [];
+  for (let i = 0; i <= 48; i++) {
+    const a = (i / 48) * Math.PI * 2.08;
+    const r = 60 + Math.sin(i * 0.9) * 3;
+    circle.push(Math.round((120 + Math.cos(a) * r * 1.4) * 10) / 10, Math.round((100 + Math.sin(a) * r) * 10) / 10, 0.4 + 0.3 * Math.sin(i / 7));
+  }
+  const arrow = [220, 100, 0.5, 280, 96, 0.6, 340, 100, 0.7, 380, 102, 0.6];
+  const head = [356, 84, 0.5, 382, 102, 0.7, 358, 120, 0.5];
+  createPage(s, {
+    title: 'Tableau blanc',
+    kind: 'canvas',
+    parentId: welcome.id,
+    ink: {
+      bg: 'dots',
+      strokes: [
+        { id: 'seed1', tool: 'pen', color: '#2563eb', width: 3, pts: circle },
+        { id: 'seed2', tool: 'pen', color: '#1e293b', width: 3, pts: arrow },
+        { id: 'seed3', tool: 'pen', color: '#1e293b', width: 3, pts: head },
+        { id: 'seed4', tool: 'highlighter', color: '#facc15', width: 20, pts: [70, 100, 0.5, 170, 100, 0.5] },
+      ],
+    },
   });
   const db = createPage(s, { title: 'Projets', kind: 'database', content: 'Une base de données façon Notion : chaque ligne est une page.' });
   const statusProp = db.schema!.props[0];

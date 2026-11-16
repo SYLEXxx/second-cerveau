@@ -3,7 +3,7 @@ import { buildGraph, tick, type GNode, type GraphOptions } from '../../core/grap
 import { esc } from '../dom';
 
 const OPTS_KEY = 'sc_graph_opts';
-const COLORS: Record<GNode['kind'], string> = { page: '#8b5cf6', database: '#f59e0b', daily: '#0ea5e9', tag: '#10b981' };
+const COLORS: Record<GNode['kind'], string> = { page: '#8b5cf6', database: '#f59e0b', canvas: '#ec4899', daily: '#0ea5e9', tag: '#10b981' };
 
 function loadOpts(): GraphOptions {
   try {
@@ -36,6 +36,7 @@ export const graphView: ViewFn = (ctx, screen, route) => {
     <div class="absolute left-4 bottom-4 flex gap-3 text-[11px] text-slate-500 pointer-events-none">
       <span><i class="fa-solid fa-circle" style="color:${COLORS.page}"></i> page</span>
       <span><i class="fa-solid fa-circle" style="color:${COLORS.database}"></i> base</span>
+      <span><i class="fa-solid fa-circle" style="color:${COLORS.canvas}"></i> croquis</span>
       <span><i class="fa-solid fa-circle" style="color:${COLORS.daily}"></i> journal</span>
       ${opts.tags ? `<span><i class="fa-solid fa-circle" style="color:${COLORS.tag}"></i> étiquette</span>` : ''}
     </div>

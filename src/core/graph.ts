@@ -4,7 +4,7 @@ import { parseLinks, parseTags } from './links';
 
 // Graphe des notes façon Obsidian : nœuds = pages (et étiquettes), arêtes = liens.
 
-export type NodeKind = 'page' | 'database' | 'daily' | 'tag';
+export type NodeKind = 'page' | 'database' | 'canvas' | 'daily' | 'tag';
 
 export interface GNode {
   id: string;
@@ -39,7 +39,7 @@ export function buildGraph(s: VaultState, opts: GraphOptions): { nodes: GNode[];
     return {
       id: p.id,
       label: (p.icon ? p.icon + ' ' : '') + displayTitle(p),
-      kind: p.kind === 'database' ? 'database' : /^\d{4}-\d{2}-\d{2}$/.test(p.title.trim()) ? 'daily' : 'page',
+      kind: p.kind === 'database' ? 'database' : p.kind === 'canvas' ? 'canvas' : /^\d{4}-\d{2}-\d{2}$/.test(p.title.trim()) ? 'daily' : 'page',
       x: Math.cos(angle) * r,
       y: Math.sin(angle) * r,
       vx: 0,

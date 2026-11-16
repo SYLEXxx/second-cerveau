@@ -4,7 +4,7 @@ import { esc, relTime } from './dom';
 
 export function pageIcon(p: Page): string {
   if (p.icon) return esc(p.icon);
-  return p.kind === 'database' ? '🗂️' : '<i class="fa-regular fa-file-lines text-slate-400"></i>';
+  return p.kind === 'database' ? '🗂️' : p.kind === 'canvas' ? '✍️' : '<i class="fa-regular fa-file-lines text-slate-400"></i>';
 }
 
 /** Ligne de liste cliquable vers une page. */

@@ -29,17 +29,18 @@ export const homeView: ViewFn = (ctx, screen) => {
     ${import.meta.env.MODE === 'single' ? `<p class="mb-4 p-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-200 text-xs">Aperçu en ligne : vos essais restent dans ce navigateur et les exports de fichiers sont désactivés ici. Pour l'usage réel, installez l'application (voir LISEZMOI).</p>` : ''}
     <a href="#/search" class="flex items-center gap-3 px-4 py-3 mb-4 card text-slate-400"><i class="fa-solid fa-magnifying-glass"></i><span>Rechercher dans vos notes…</span></a>
 
-    <div class="grid grid-cols-4 gap-2 mb-5">
+    <div class="grid grid-cols-5 gap-2 mb-5">
       ${[
         ['new', 'fa-pen-to-square', 'Note', 'text-violet-600 bg-violet-100 dark:bg-violet-900/40 dark:text-violet-300'],
         ['daily', 'fa-calendar-day', 'Du jour', 'text-sky-600 bg-sky-100 dark:bg-sky-900/40 dark:text-sky-300'],
+        ['ink', 'fa-signature', 'Croquis', 'text-pink-600 bg-pink-100 dark:bg-pink-900/40 dark:text-pink-300'],
         ['db', 'fa-table', 'Base', 'text-amber-600 bg-amber-100 dark:bg-amber-900/40 dark:text-amber-300'],
         ['expense', 'fa-receipt', 'Dépense', 'text-rose-600 bg-rose-100 dark:bg-rose-900/40 dark:text-rose-300'],
       ]
         .map(
           ([a, icon, label, cls]) => `<button data-action="${a}" class="flex flex-col items-center gap-1.5 py-3 card active:scale-95 transition">
             <span class="w-10 h-10 rounded-xl flex items-center justify-center ${cls}"><i class="fa-solid ${icon}"></i></span>
-            <span class="text-xs font-semibold">${label}</span></button>`,
+            <span class="text-[11px] font-semibold">${label}</span></button>`,
         )
         .join('')}
     </div>
@@ -62,6 +63,7 @@ export const homeView: ViewFn = (ctx, screen) => {
     new: () => ctx.newPage(),
     daily: () => ctx.openDaily(),
     db: () => ctx.newPage({ kind: 'database', title: 'Nouvelle base' }),
+    ink: () => ctx.newPage({ kind: 'canvas', title: 'Croquis' }),
     expense: () => ctx.go('/budget?add=1'),
   });
 };

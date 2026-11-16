@@ -12,6 +12,7 @@ import { renderDatabase, rowPropsHtml } from '../dbview';
 import { editValue, newProp } from '../props';
 import { confirmSheet, openMenu, pickEmoji, promptText, toast } from '../sheet';
 import { livePages } from '../../core/vault';
+import { whiteboardView } from '../whiteboard';
 
 // Écran d'une page : titre, propriétés (ligne de base), contenu en lecture ou en édition,
 // sous-pages, base de données et rétroliens.
@@ -27,6 +28,7 @@ export const pageView: ViewFn = (ctx, screen, route) => {
     screen.querySelector('[data-action=back]')?.addEventListener('click', () => history.back());
     return;
   }
+  if (page.kind === 'canvas') return whiteboardView(ctx, screen, page);
   if (route.params.edit) {
     editingId = page.id;
     editCaret = undefined;
@@ -149,10 +151,10 @@ export const pageView: ViewFn = (ctx, screen, route) => {
           }, true),
         onDone: stopEdit,
         createChild: async (kind) => {
-          const title = await promptText(kind === 'database' ? 'Nom de la base' : 'Nom de la sous-page', '', { ok: 'Créer' });
+          const title = await promptText(kind === 'database' ? 'Nom de la base' : kind === 'canvas' ? 'Nom du tableau blanc' : 'Nom de la sous-page', '', { ok: 'Créer' });
           if (!title?.trim()) return null;
           ctx.store.update((st) => void createPage(st, { title: title.trim(), parentId: page.id, kind }), true);
-          return kind === 'database' ? `![[${title.trim()}]]\n` : `[[${title.trim()}]]`;
+          return kind === 'page' ? `[[${title.trim()}]]` : `![[${title.trim()}]]\n`;
         },
       },
       editCaret,
@@ -228,6 +230,7 @@ function moreMenu(ctx: Ctx, page: Page): void {
       ? [
           { label: 'Nouvelle sous-page', icon: 'fa-file-circle-plus', run: () => ctx.newPage({ parentId: page.id }) },
           { label: 'Nouvelle base dans cette page', icon: 'fa-table', run: () => ctx.newPage({ parentId: page.id, kind: 'database', title: 'Nouvelle base' }) },
+          { label: 'Nouveau tableau blanc ici', icon: 'fa-signature', run: () => ctx.newPage({ parentId: page.id, kind: 'canvas', title: 'Croquis' }) },
         ]
       : []),
     { label: 'Voir dans le graphe', icon: 'fa-circle-nodes', run: () => ctx.go(`/graph?focus=${page.id}`) },
@@ -238,7 +241,7 @@ function moreMenu(ctx: Ctx, page: Page): void {
       run: () => {
         let id = '';
         store.update((s) => {
-          id = createPage(s, { title: `${page.title} (copie)`, parentId: page.parentId, content: page.content, icon: page.icon, props: structuredClone(page.props), kind: page.kind, schema: page.schema ? structuredClone(page.schema) : undefined }).id;
+          id = createPage(s, { title: `${page.title} (copie)`, parentId: page.parentId, content: page.content, icon: page.icon, props: structuredClone(page.props), kind: page.kind, schema: page.schema ? structuredClone(page.schema) : undefined, ink: page.ink ? structuredClone(page.ink) : undefined }).id;
         });
         ctx.go(`/p/${id}`);
       },

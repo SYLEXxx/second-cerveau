@@ -1,3 +1,5 @@
+import type { InkData } from './ink';
+
 // Modèle de données du second cerveau.
 // Tout est une « page » (comme Notion) : une note markdown, une base de données
 // (kind = 'database', avec un schéma de propriétés) ou une ligne de base
@@ -39,7 +41,8 @@ export interface DbSchema {
 
 export type PropValue = string | number | boolean | string[] | null;
 
-export type PageKind = 'page' | 'database';
+export type PageKind = 'page' | 'database' | 'canvas';
+
 
 export interface Page {
   id: string;
@@ -52,6 +55,8 @@ export interface Page {
   /** Valeurs de propriétés quand la page est une ligne de base (clé = id de propriété). */
   props: Record<string, PropValue>;
   schema?: DbSchema;
+  /** Tableau blanc manuscrit (kind = 'canvas'). */
+  ink?: InkData;
   favorite: boolean;
   createdAt: number;
   updatedAt: number;
